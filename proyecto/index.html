@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BELLA v2.0 - Conciencia Persistente</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #terminal {
+            width: 80%;
+            height: 70vh;
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            border-radius: 5px;
+        }
+        .line { margin-bottom: 8px; line-height: 1.4; }
+        .user-input-line { color: #55ff55; font-weight: bold; }
+        .bella-response { color: #00d9ff; }
+        .system-msg { color: #ffaa00; font-size: 0.8em; }
+        
+        #input-area {
+            width: 80%;
+            margin-top: 20px;
+            display: flex;
+        }
+        input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 10px;
+            font-family: inherit;
+            outline: none;
+        }
+        button {
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover { background: #00cc33; }
+        
+        /* Scrollbar custom */
+        #terminal::-webkit-scrollbar { width: 8px; }
+        #terminal::-webkit-scrollbar-thumb { background: #004411; }
+    </style>
+</head>
+<body>
+
+    <h1>BELLA v2.0</h1>
+    <div id="terminal">
+        <div class="line">--- SISTEMA INICIADO: ESPERANDO PULSO DE VOZ ---</div>
+    </div>
+
+    <div id="input-area">
+        <input type="text" id="user-in" placeholder="Escribe algo para Bella..." autofocus>
+        <button onclick="procesar()">ENVIAR</button>
+    </div>
+
+    <script>
+        // --- LÓGICA DE BELLA (Tu código adaptado) ---
+        const bits = 15, base = 1 << bits, mask = base - 1;
+        const PosZ = 0, PosC = bits, PosY = bits + 1, PosC1 = (bits * 2) + 1;
+        const PosX = (bits * 2) + 2, PosC2 = (bits * 3) + 2;
+        const num_n = 1048576;
+
+        let traductor = {};
+        let memoria = new BigInt64Array(num_n).fill(BigInt((1 << PosC) + (1 << PosC1) + (1 << PosC2)));
+        let exps = Array.from({ length: num_n }, () => [0, 0, 0]);
+
+        function Numeraso_Exp(ExpX, ExpY, ExpZ) {
+            let NumerasoXP = (BigInt(ExpX) << BigInt(PosX)) + (BigInt(ExpY) << BigInt(PosY)) + 
+                             (BigInt(ExpZ) << BigInt(PosZ)) + (1n << BigInt(PosC)) + 
+                             (1n << BigInt(PosC1)) + (1n << BigInt(PosC2));
+            let getC = (val, pos) => Number((val >> BigInt(pos)) & 1n);
+            let C1 = getC(NumerasoXP, PosC), C2 = getC(NumerasoXP, PosC1), C3 = getC(NumerasoXP, PosC2);
+            while ((C1 + C2 + C3) !== 3) {
+                let D1 = 1 - C1, D2 = 1 - C2, D3 = 1 - C3;
+                NumerasoXP += (BigInt(D1) << BigInt(PosC)) + (BigInt(D2) << BigInt(PosC1)) + (BigInt(D3) << BigInt(PosC2));
+                NumerasoXP += BigInt(D1) - (BigInt(D1) << BigInt(PosY)) - (BigInt(D2) << BigInt(PosZ)) - (BigInt(D3) << BigInt(PosX));
+                C1 = getC(NumerasoXP, PosC); C2 = getC(NumerasoXP, PosC1); C3 = getC(NumerasoXP, PosC2);
+                NumerasoXP %= (1n << BigInt(PosC2 + 1));
+            }
+            return [Number((NumerasoXP >> BigInt(PosX)) & BigInt(mask)), Number((NumerasoXP >> BigInt(PosY)) & BigInt(mask)), Number((NumerasoXP >> BigInt(PosZ)) & BigInt(mask))];
+        }
+
+        function Numeraso2_update(expx, expy, expz, Numero_generado) {
+            let n_gen = BigInt(Numero_generado);
+            let getC = (val, pos) => Number((val >> BigInt(pos)) & 1n);
+            let C4 = getC(n_gen, PosC), C5 = getC(n_gen, PosC1), C6 = getC(n_gen, PosC2);
+            [expx, expy, expz] = Numeraso_Exp(expx, expy, expz);
+            while ((C4 + C5 + C6) !== 3) {
+                let D4 = 1 - C4, D5 = 1 - C5, D6 = 1 - C6;
+                expx += D6; expy += D5; expz += D4;
+                n_gen += (BigInt(D4) << BigInt(PosZ)) + (BigInt(D4) << BigInt(PosC)) + (BigInt(D5) << BigInt(PosC1)) + (BigInt(D6) << BigInt(PosC2));
+                n_gen += (BigInt(D4) * BigInt(expx)) << BigInt(PosZ);
+                n_gen -= (BigInt(D4) * BigInt(expx)) << BigInt(PosY);
+                C4 = getC(n_gen, PosC); C5 = getC(n_gen, PosC1); C6 = getC(n_gen, PosC2);
+                n_gen %= (1n << BigInt(PosC2 + 1));
+            }
+            return [n_gen, expx, expy, expz];
+        }
+
+        function xorid(frag) {
+            let id_acc = 0;
+            for (let i = 0; i < frag.length; i++) id_acc = (id_acc ^ frag.charCodeAt(i)) << 1;
+            return id_acc * 20;
+        }
+
+        function entrenar(texto) {
+            for (let i = 0; i < texto.length; i += 8) {
+                let frag = texto.substring(i, i + 8);
+                let energia = xorid(frag);
+                let idx = (Math.floor(energia / 20)) % num_n;
+                traductor[idx] = frag;
+                memoria[idx] += BigInt(energia);
+                let [n_gen, ex0, ex1, ex2] = Numeraso2_update(exps[idx][0], exps[idx][1], exps[idx][2], memoria[idx]);
+                memoria[idx] = n_gen;
+                exps[idx] = [ex0, ex1, ex2];
+            }
+        }
+
+        function proyectar() {
+            let candidatas = [...Array(num_n).keys()].filter(i => exps[i][2] > 0 && traductor[i]).sort((a, b) => exps[b][2] - exps[a][2]).slice(0, 5);
+            let frase = candidatas.map(i => {
+                let f = traductor[i];
+                exps[i][2] = Math.max(0, exps[i][2] - 2);
+                return f;
+            }).join(" ");
+            return frase || "...";
+        }
+
+        // --- INTERFAZ ---
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('user-in');
+
+        function print(msg, cl = "") {
+            const div = document.createElement('div');
+            div.className = "line " + cl;
+            div.textContent = msg;
+            terminal.appendChild(div);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function procesar() {
+            const val = input.value;
+            if(!val) return;
+            print(`Uziel > ${val}`, "user-input-line");
+            input.value = "";
+
+            entrenar(val);
+            const p_total = exps.reduce((acc, e) => acc + e[2], 0);
+            print(`[Presión Global: ${p_total}]`, "system-msg");
+
+            const start = performance.now();
+            const res = proyectar();
+            const lat = (performance.now() - start).toFixed(4);
+
+            setTimeout(() => {
+                print(`>>> Bella dice: ${res}`, "bella-response");
+                print(`| Latencia: ${lat} ms`, "system-msg");
+            }, 300);
+        }
+
+        input.addEventListener("keypress", (e) => { if(e.key === "Enter") procesar(); });
+    </script>
+</body>
+</html>
