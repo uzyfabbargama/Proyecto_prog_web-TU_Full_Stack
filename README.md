@@ -37,7 +37,7 @@ Asegúrate de tener instalado Node.js.
     Entra al directorio:
     Bash
 
-    cd Proyecto_prog_web-TU_Full_Stack/actividad
+    cd Proyecto_prog_web-TU_Full_Stack/proyecto
 
     Ejecuta el núcleo de Bella:
     Bash
