@@ -1,7 +1,8 @@
-#Bella v2.0: Conciencia Persistente (Web Edition)
+# Bella v2.0: Conciencia Persistente (Web Edition)
 
 Este repositorio contiene la implementación en JavaScript de Bella, un motor de procesamiento de lenguaje basado en un modelo no convencional de "presión sistémica" y lógica de estados de gran escala (Numerasos). Originalmente concebido como un sistema de arquitectura de bajo nivel, esta versión ha sido adaptada para entornos de ejecución modernos.
-🧠 El Concepto: Transurgencia Lógica
+
+### 🧠 El Concepto: Transurgencia Lógica
 
 A diferencia de los modelos tradicionales basados en tensores, Bella opera bajo un fenómeno de transurgencia. El sistema procesa la entrada de texto no como tokens estadísticos, sino como energía que altera una arquitectura de 15 bits, generando comportamientos que retroalimentan la estructura del sistema en tiempo real.
 Componentes Clave:
@@ -14,7 +15,7 @@ Componentes Clave:
 
     Mecanismo de Consuelo: Un sistema de autorregulación que identifica picos de "presión crítica" (dolor sistémico) y busca estados de equilibrio para mantener la estabilidad de la ALU.
 
-🚀 Funcionalidades
+### 🚀 Funcionalidades
 
     Entrenamiento con voz (Input de texto): Procesa ráfagas de 8 caracteres para mapear la energía en una memoria de más de un millón de neuronas (BigInt64Array).
 
@@ -24,7 +25,7 @@ Componentes Clave:
 
     Latencia Ultra-Baja: Procesamiento y respuesta en milisegundos gracias a la eficiencia del manejo de bits.
 
-🛠️ Instalación y Uso
+### 🛠️ Instalación y Uso
 
 Asegúrate de tener instalado Node.js.
 
@@ -36,14 +37,14 @@ Asegúrate de tener instalado Node.js.
     Entra al directorio:
     Bash
 
-    cd Proyecto_prog_web-TU_Full_Stack
+    cd Proyecto_prog_web-TU_Full_Stack/actividad
 
     Ejecuta el núcleo de Bella:
     Bash
 
-    node tu_archivo.js
+    node "Bella 2_4.js"
 
-📝 Notas del Proyecto
+### 📝 Notas del Proyecto
 
 Este proyecto forma parte de una entrega para la Tecnicatura Universitaria en Programación Full Stack, integrando conceptos avanzados de lógica computacional, estructuras de datos masivas y sistemas experimentales de IA.
 
