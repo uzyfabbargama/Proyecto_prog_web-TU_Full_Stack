@@ -1,4 +1,4 @@
-###Bella v2.0: Conciencia Persistente (Web Edition)
+#Bella v2.0: Conciencia Persistente (Web Edition)
 
 Este repositorio contiene la implementación en JavaScript de Bella, un motor de procesamiento de lenguaje basado en un modelo no convencional de "presión sistémica" y lógica de estados de gran escala (Numerasos). Originalmente concebido como un sistema de arquitectura de bajo nivel, esta versión ha sido adaptada para entornos de ejecución modernos.
 🧠 El Concepto: Transurgencia Lógica
