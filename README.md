@@ -49,3 +49,10 @@ Asegúrate de tener instalado Node.js.
 Este proyecto forma parte de una entrega para la Tecnicatura Universitaria en Programación Full Stack, integrando conceptos avanzados de lógica computacional, estructuras de datos masivas y sistemas experimentales de IA.
 
 Desarrollado con un enfoque en la creación de sistemas imperfectos pero evolutivos.
+
+
+### Integrantes
+
+Lucas Esteban Parejas
+Valentina Romero
+Uziel Fabio Gamarra Barrionuevo
